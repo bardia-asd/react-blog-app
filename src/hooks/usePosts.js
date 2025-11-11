@@ -12,7 +12,6 @@ const usePosts = (url) => {
             const res = await fetch(url);
             if (!res.ok) throw new Error("Failed to fetch posts");
             const data = await res.json();
-            console.log(data)
             setPosts(data.posts);
             setError(null);
         } catch (err) {
