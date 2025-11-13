@@ -5,6 +5,17 @@ import usePosts from "../hooks/usePosts";
 import Card from "../components/ui/Card";
 import Skeleton from "../components/ui/Skeleton";
 import Badge from "../components/ui/Badge";
+import {
+    AlertDialog,
+    AlertDialogTrigger,
+    AlertDialogPortal,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from "../components/ui/AlertDialog";
 
 export default function PostDetail() {
     const param = useParams();
@@ -14,6 +25,13 @@ export default function PostDetail() {
         "https://dummyjson.com/posts",
         param.id
     );
+
+    const { deletePost } = usePosts("https://dummyjson.com/posts");
+
+    const handleDelete = () => {
+        deletePost(post.id);
+        navigate("/");
+    };
 
     return (
         <section>
@@ -96,10 +114,36 @@ export default function PostDetail() {
                                 </button>
                             </Link>
                             {/* Delete post button */}
-                            <button className="flex items-center gap-3 py-2 px-3 rounded-lg border border-red-500 text-red-500 text-sm hover:bg-red-50 transition-colors duration-150 cursor-pointer">
-                                <Trash2 size={18} />
-                                Delete Post
-                            </button>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <button className="flex items-center gap-3 py-2 px-3 rounded-lg border border-red-500 text-red-500 text-sm hover:bg-red-50 transition-colors duration-150 cursor-pointer">
+                                        <Trash2 size={18} />
+                                        Delete Post
+                                    </button>
+                                </AlertDialogTrigger>
+
+                                <AlertDialogPortal>
+                                    <AlertDialogOverlay />
+                                    <AlertDialogContent>
+                                        <AlertDialogTitle>
+                                            Delete Post
+                                        </AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            Are you sure you want to delete this
+                                            post? This action cannot be undone.
+                                        </AlertDialogDescription>
+                                        <div className="flex justify-end gap-3">
+                                            <AlertDialogCancel>
+                                                Cancel
+                                            </AlertDialogCancel>
+                                            <AlertDialogAction
+                                                onClick={handleDelete}>
+                                                Delete
+                                            </AlertDialogAction>
+                                        </div>
+                                    </AlertDialogContent>
+                                </AlertDialogPortal>
+                            </AlertDialog>
                         </div>
                     </Card>
                 </div>

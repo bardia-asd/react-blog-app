@@ -5,8 +5,8 @@ import PostCard from "../components/PostCard";
 import PostCardSkeleton from "../components/PostCardSkeleton";
 
 export default function HomePage() {
-    const { posts, loading, error, editPost, deletePost } = usePosts(
-        "https://dummyjson.com/posts/?delay=1000"
+    const { posts, loading, error, deletePost } = usePosts(
+        "https://dummyjson.com/posts"
     );
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredPosts, setFilteredPosts] = useState([]);
@@ -73,7 +73,6 @@ export default function HomePage() {
                             key={post.id}
                             post={post}
                             onDelete={deletePost}
-                            onEdit={editPost}
                         />
                     ))}
                 </div>

@@ -2,8 +2,19 @@ import { Link } from "react-router-dom";
 import { User, ArrowRight, Pen, Trash2 } from "lucide-react";
 import Card from "./ui/Card";
 import Badge from "./ui/Badge";
+import {
+    AlertDialog,
+    AlertDialogTrigger,
+    AlertDialogPortal,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from "./ui/AlertDialog";
 
-export default function PostCard({ post, onDelete, onEdit }) {
+export default function PostCard({ post, onDelete }) {
     return (
         <article>
             {/* Card wrapper with hover effect and full height for equal grid heights */}
@@ -55,9 +66,33 @@ export default function PostCard({ post, onDelete, onEdit }) {
                     </Link>
 
                     {/* Delete button (handle delete separately in parent or via prop) */}
-                    <button className="flex items-center justify-center w-9 h-9 rounded-md text-red-500 hover:bg-red-50 transition-colors duration-150 cursor-pointer">
-                        <Trash2 size={18} />
-                    </button>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <button className="inline-flex w-9 h-9 items-center justify-center rounded-md text-red-500 hover:bg-red-50 outline-none transition-colors duration-150 cursor-pointer">
+                                <Trash2 size={18} />
+                            </button>
+                        </AlertDialogTrigger>
+
+                        <AlertDialogPortal>
+                            <AlertDialogOverlay />
+                            <AlertDialogContent>
+                                <AlertDialogTitle>Delete Post</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    Are you sure you want to delete this post?
+                                    This action cannot be undone.
+                                </AlertDialogDescription>
+                                <div className="flex justify-end gap-3">
+                                    <AlertDialogCancel>
+                                        Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                        onClick={() => onDelete(post.id)}>
+                                        Delete
+                                    </AlertDialogAction>
+                                </div>
+                            </AlertDialogContent>
+                        </AlertDialogPortal>
+                    </AlertDialog>
                 </div>
             </Card>
         </article>
